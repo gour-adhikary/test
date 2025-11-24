@@ -75,24 +75,35 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
       
-    - name: Deploy to Render
-      uses: johnbeynon/render-deploy-action@v0.0.8
-      with:
-        service-id: ${{ secrets.RENDER_SERVICE_ID }}
-        api-key: ${{ secrets.RENDER_API_KEY }}
-        
-    - name: Wait for deployment
+    - name: Deploy Status
       run: |
-        echo "Waiting for deployment to complete..."
-        sleep 60
+        echo "🚀 Tests passed! Ready for deployment."
+        echo "📝 Render will auto-deploy this commit when connected to your repository."
+        echo "🔗 Check your Render dashboard for deployment status."
         
-    - name: Health Check
-      run: |
-        curl -f ${{ secrets.RENDER_SERVICE_URL }}/health || exit 1
-        echo "Health check passed!"
+    # Uncomment the following steps if you want to use GitHub secrets for automated deployment
+    # - name: Deploy to Render
+    #   uses: johnbeynon/render-deploy-action@v0.0.8
+    #   with:
+    #     service-id: ${{ secrets.RENDER_SERVICE_ID }}
+    #     api-key: ${{ secrets.RENDER_API_KEY }}
+    #     
+    # - name: Wait for deployment
+    #   run: |
+    #     echo "Waiting for deployment to complete..."
+    #     sleep 60
+    #     
+    # - name: Health Check
+    #   run: |
+    #     curl -f ${{ secrets.RENDER_SERVICE_URL }}/health || exit 1
+    #     echo "Health check passed!"
         
     - name: Notify Success
       if: success()
       run: |
-        echo "🚀 Deployment successful!"
-        echo "Service URL: ${{ secrets.RENDER_SERVICE_URL }}"
+        echo "✅ CI Pipeline completed successfully!"
+        echo "🚀 Code is ready for deployment!"
+        echo "📋 Next steps:"
+        echo "  1. Render will auto-deploy if connected to this repository"
+        echo "  2. Check your Render dashboard for deployment status"
+        echo "  3. Your service will be available once deployment completes"
