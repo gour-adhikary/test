@@ -80,7 +80,7 @@ router.post('/users', (req: Request, res: Response) => {
 });
 
 // Test endpoint with error
-router.get('/test-error', (req: Request, res: Response) => {
+router.get('/test-error', (_req: Request, _res: Response) => {
   throw new Error('This is a test error');
 });
 
