@@ -4,10 +4,10 @@ FROM node:22-alpine AS builder
 WORKDIR /app
 
 # Copy package files
-COPY package.json package-lock.json* ./
+COPY package.json ./
 
-# Install dependencies
-RUN npm ci --only=production
+# Install all dependencies (including dev dependencies for build)
+RUN npm install
 
 # Copy source code
 COPY . .
@@ -28,10 +28,9 @@ RUN adduser --system --uid 1001 appuser
 
 # Copy necessary files from builder
 COPY --from=builder /app/package.json ./package.json
-COPY --from=builder /app/package-lock.json* ./
 
 # Install only production dependencies
-RUN npm ci --only=production && npm cache clean --force
+RUN npm install --only=production && npm cache clean --force
 
 # Copy built application
 COPY --from=builder --chown=appuser:nodejs /app/dist ./dist
